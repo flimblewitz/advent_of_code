@@ -1,10 +1,9 @@
-use std::collections::HashSet;
-
 type Tile = (u32, bool);
 #[derive(Debug)]
 struct Board(Vec<Vec<Tile>>);
 
 impl Board {
+    // todo just take the vecs and turn them into a 2d 5x5 array, blowing up if it doesn't fit
     fn new(board_string: &str) -> Self {
         Board(
             board_string
@@ -20,11 +19,6 @@ impl Board {
     fn apply_number(&mut self, number: &u32) {
         self.0.iter_mut().for_each(|row| {
             row.iter_mut()
-                // .inspect(|column| {
-                //     if *number == column.0 {
-                //         // println!("matched {number}")
-                //     }
-                // })
                 .for_each(|column| column.1 = column.1 || *number == column.0)
         })
     }
