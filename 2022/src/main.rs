@@ -19,14 +19,14 @@ fn main() {
 
     let raw_input = fs::read_to_string(format!("src/days/day_{day:02}_input.txt")).unwrap();
 
-    let trimmed_input = raw_input.trim();
+    let trimmed_input = raw_input.trim_end();
 
     match day {
         1 => solve!(day_01, &trimmed_input),
         2 => solve!(day_02, &trimmed_input),
         3 => solve!(day_03, &trimmed_input),
         4 => solve!(day_04, &trimmed_input),
-        // 5 => solve!(day_05, &trimmed_input),
+        5 => solve!(day_05, &trimmed_input),
         // 6 => solve!(day_06, &trimmed_input),
         // 7 => solve!(day_07, &trimmed_input),
         // 8 => solve!(day_08, &trimmed_input),
