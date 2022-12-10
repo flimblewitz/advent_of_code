@@ -1,3 +1,17 @@
+fn parse_input(input: &str) -> Vec<char> {
+    input
+        .lines()
+        .map(|line| {
+            let compartments = line.split_at(line.len() / 2);
+            compartments
+                .0
+                .chars()
+                .find(|c| compartments.1.contains(*c))
+                .unwrap()
+        })
+        .collect()
+}
+
 pub fn part_one(input: &str) -> usize {
     let chars_in_both_compartments_per_rucksack = input
         .lines()
