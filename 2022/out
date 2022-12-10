@@ -1,0 +1,89 @@
+main loop is iterating with line $ ls
+line: $ ls
+line after ls: dir a
+first word in ls line: dir, true
+just inserted dir a, keys are ['a']
+the new child is Directory { size: 0, children: {} }
+current_ls_line: Some("14848514 b.txt")
+line after ls: 14848514 b.txt
+first word in ls line: 14848514, false
+current directory size is now 14848514
+current_ls_line: Some("8504156 c.dat")
+line after ls: 8504156 c.dat
+first word in ls line: 8504156, false
+current directory size is now 23352670
+current_ls_line: Some("dir d")
+line after ls: dir d
+first word in ls line: dir, true
+just inserted dir d, keys are ['a', 'd']
+the new child is Directory { size: 0, children: {} }
+current_ls_line: Some("$ cd a")
+line after ls: $ cd a
+hit a $, backing out of 'ls'
+line: $ cd a
+keys are ['a', 'd']
+key is a
+the child directory is Some(Directory { size: 0, children: {} })
+delving into directory a
+line: $ ls
+line after ls: dir e
+first word in ls line: dir, true
+just inserted dir e, keys are ['e']
+the new child is Directory { size: 0, children: {} }
+current_ls_line: Some("29116 f")
+line after ls: 29116 f
+first word in ls line: 29116, false
+current directory size is now 29116
+current_ls_line: Some("2557 g")
+line after ls: 2557 g
+first word in ls line: 2557, false
+current directory size is now 31673
+current_ls_line: Some("62596 h.lst")
+line after ls: 62596 h.lst
+first word in ls line: 62596, false
+current directory size is now 94269
+current_ls_line: Some("$ cd e")
+line after ls: $ cd e
+hit a $, backing out of 'ls'
+line: $ cd e
+keys are ['e']
+key is e
+the child directory is Some(Directory { size: 0, children: {} })
+delving into directory e
+line: $ ls
+line after ls: 584 i
+first word in ls line: 584, false
+current directory size is now 584
+current_ls_line: Some("$ cd ..")
+line after ls: $ cd ..
+hit a $, backing out of 'ls'
+line: $ cd ..
+hit '..', leaving
+line: $ cd ..
+hit '..', leaving
+line: $ cd d
+keys are ['a', 'd']
+key is d
+the child directory is Some(Directory { size: 0, children: {} })
+delving into directory d
+line: $ ls
+line after ls: 4060174 j
+first word in ls line: 4060174, false
+current directory size is now 4060174
+current_ls_line: Some("8033020 d.log")
+line after ls: 8033020 d.log
+first word in ls line: 8033020, false
+current directory size is now 12093194
+current_ls_line: Some("5626152 d.ext")
+line after ls: 5626152 d.ext
+first word in ls line: 5626152, false
+current directory size is now 17719346
+current_ls_line: Some("7214296 k")
+line after ls: 7214296 k
+first word in ls line: 7214296, false
+current directory size is now 24933642
+current_ls_line: None
+key e had size 584
+key a had size 94853
+key d had size 0
+part 1: 94853
