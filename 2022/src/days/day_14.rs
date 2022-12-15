@@ -41,8 +41,9 @@ fn parse_input(input: &str) -> (Vec<Vec<Tile>>, usize) {
         .map(|point_sequence| point_sequence.iter().map(|(x, _)| x).min().unwrap())
         .min()
         .unwrap()
-        .min(&500); // we want to include the sand-dropping x coord
-                    // println!("smallest_x: {}", smallest_x);
+        // we want to include the sand-dropping x coord
+        .min(&500);
+    // println!("smallest_x: {}", smallest_x);
 
     let largest_x = *point_sequences
         .iter()
@@ -50,13 +51,6 @@ fn parse_input(input: &str) -> (Vec<Vec<Tile>>, usize) {
         .max()
         .unwrap();
     // println!("largest_x: {}", largest_x);
-
-    // let smallest_y = *point_sequences
-    //     .iter()
-    //     .map(|point_sequence| point_sequence.iter().map(|(_, y)| y).min().unwrap())
-    //     .min()
-    //     .unwrap(); // we want to include the sand-dropping x coord
-    // println!("smallest_y: {}", smallest_y);
 
     let largest_y = *point_sequences
         .iter()
@@ -176,7 +170,7 @@ pub fn part_two(input: &str) -> usize {
 
     let num_cols_desired_right_of_sand_drop_x = (num_rows + 2) - 1;
     let num_cols_right_of_sand_drop_x = num_cols - x_from_which_sand_falls - 1;
-    // this will blow up if there's "useless" rock way off to the left, but let's assume that's not the case
+    // this will blow up if there's "useless" rock way off to the right, but let's assume that's not the case
     let num_cols_to_add_right =
         num_cols_desired_right_of_sand_drop_x - num_cols_right_of_sand_drop_x;
 
@@ -186,10 +180,8 @@ pub fn part_two(input: &str) -> usize {
         (0..num_cols_to_add_right).for_each(|_| row.push(Tile::Air));
     });
 
-    // the num_cols has now changed
+    // the num_cols just changed, so let's make sure to get the correct number before adding empty rows of rock and air respectively
     let num_cols = grid[0].len();
-
-    // let's add the empty rows of air and rock respectively
     grid.push(vec![Tile::Air; num_cols]);
     grid.push(vec![Tile::Rock; num_cols]);
 
