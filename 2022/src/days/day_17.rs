@@ -178,6 +178,6 @@ pub fn part_one(input: &str) -> usize {
 }
 
 pub fn part_two(input: &str) -> usize {
-    // let (mut grid, x_from_which_sand_falls) = parse_input(input);
-    todo!()
+    let (mut jets, mut rocks) = parse_input(input);
+    todo!("I tried discarding excess memory by greedily lopping off the bottom of the tower continuously starting at height 2000 just to see what would happen, but, well 1000000000000 is a big number. The solution must involve identifying a cycle in the ongoing structure of the tower and then doing something analogous to modulo division to find the answer without having to churn through every iteration of rock-laying")
 }
