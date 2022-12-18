@@ -39,7 +39,7 @@ fn main() {
         15 => solve!(day_15, &trimmed_input),
         16 => solve!(day_16, &trimmed_input),
         17 => solve!(day_17, &trimmed_input),
-        // 18 => solve!(day_18, &trimmed_input),
+        18 => solve!(day_18, &trimmed_input),
         // 19 => solve!(day_19, &trimmed_input),
         // 20 => solve!(day_20, &trimmed_input),
         // 21 => solve!(day_21, &trimmed_input),
