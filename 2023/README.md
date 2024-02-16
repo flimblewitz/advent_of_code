@@ -1,0 +1,1 @@
+This is based on the following template: https://github.com/fspoettel/advent-of-code-rust/tree/main
