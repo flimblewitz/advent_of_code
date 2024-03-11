@@ -50,13 +50,13 @@ pub fn part_two(input: &str) -> Option<usize> {
         acc.push(line.chars().collect());
         acc
     });
-    // I could rely entirely on part one's algorithm to roll rocks north and just rotate the whole grid clockwise before rolling rocks "north" again, but that's going to be expensive since the actual input data is big and I'm probably going to have to do it a lot of times
+    // I _could_ rely entirely on part one's algorithm to roll rocks north and perform cycles by just rotating the whole grid clockwise before rolling rocks "north" again (4 times in a row, once per cardinal direction), but that seems like it will be expensive since the actual input data is big and I may going to have to do it a lot of times. So I'm going to define a reusable function instead. I'll name it "tilt"
 
-    // the clear trap to fall into here is that I have to identify some sort of looping pattern that the cycles fall into and use that to extrapolate the final position instead of actually running 1000000000 of them
+    // the clear trap to fall into here is actually running all 1000000000 cycles
+    // to avoid running as many cycles as possible, I have to identify some sort of looping pattern that arises as the cycles continue and use that to extrapolate the final grid arrangement
     // but how do I remember what states I've fallen into after the successive cycles, and how many cycles it took to get there originally?
-    // I know there will be n distinct cycles in the pattern. I have to memorize all of them
-    // I can use a Vec to record the arrangement for each new cycle, and I can use a hashmap to match the arrangement to a cycle number (an index in the array)
-    // using a Vec<Vec<char>> as a hash key or value seems ghastly, but I won't worry about that unless necessary (it turned out to be fine)
+    // I can use a vec to record the arrangement for each new cycle, and I can use a hashmap to match the arrangement to a corresponding cycle number (an index in the vec)
+    // using a Vec<Vec<char>> as a hash key seems ghastly, but I won't worry about that unless it causes trouble (it turned out to be fine)
     let mut arrangements_by_cycle: Vec<Vec<Vec<char>>> = vec![];
     let mut cycles_by_arrangement: HashMap<Vec<Vec<char>>, usize> = HashMap::new();
     let cycles = 1000000000;
@@ -114,41 +114,11 @@ enum Direction {
 fn tilt(grid: &mut [Vec<char>], direction: Direction) {
     let row_count = grid.len();
     let col_count = grid[0].len();
-    // using closures like this means I can reuse these expressions in each match arm without having to clone the produced iterators
+
+    // using closures to produce iterators like this means I can reuse these expressions in the match arms below without having to clone the iterators themselves (the .map() invocations below need to consume a fresh iterator every time)
     let get_row_index_iterator = || 0..row_count;
     let get_col_index_iterator = || 0..col_count;
 
-    // this is how I would get the indexes if I wanted to avoid Box and dyn shenanigans
-    // let stone_indexes_ordered_for_traversal: Vec<(usize, usize)> = match direction {
-    //     Direction::North => get_row_index_iterator()
-    //         .flat_map(|row_index| {
-    //             get_col_index_iterator().map(move |col_index| (row_index, col_index))
-    //         })
-    //         .filter(|(row_index, col_index)| grid[*row_index][*col_index] == 'O')
-    //         .collect(),
-    //     Direction::West => get_col_index_iterator()
-    //         .flat_map(|col_index| {
-    //             get_row_index_iterator().map(move |row_index| (row_index, col_index))
-    //         })
-    //         .filter(|(row_index, col_index)| grid[*row_index][*col_index] == 'O')
-    //         .collect(),
-    //     Direction::South => get_row_index_iterator()
-    //         .rev()
-    //         .flat_map(|row_index| {
-    //             get_col_index_iterator().map(move |col_index| (row_index, col_index))
-    //         })
-    //         .filter(|(row_index, col_index)| grid[*row_index][*col_index] == 'O')
-    //         .collect(),
-    //     Direction::East => get_col_index_iterator()
-    //         .rev()
-    //         .flat_map(|col_index| {
-    //             get_row_index_iterator().map(move |row_index| (row_index, col_index))
-    //         })
-    //         .filter(|(row_index, col_index)| grid[*row_index][*col_index] == 'O')
-    //         .collect(),
-    // };
-
-    // I'd like to just apply the .filter() in/on this match statement, but I don't think I can since I have to wrestle with the iterator type like this with Box<dyn ...>
     // another approach is to have the match statement output a collected Vec, but then I have to copy+paste this .filter() and the .collect() for each match arm, and that's a pain to read
     // I'm not going to worry about the performance backlash of heap allocation from using Box like this; it's probably not a big deal
     let indexes_ordered_for_traversal: Box<dyn Iterator<Item = (usize, usize)>> = match direction {
@@ -166,7 +136,10 @@ fn tilt(grid: &mut [Vec<char>], direction: Direction) {
         })),
     };
 
-    // I'd like to not have to collect the Vec, but if I don't, then a problem arises below when the rocks are rolled into place because we're mutably borrowing grid inside the for loop despite the fact that the iterator is also immutably borrowing grid
+    // I'd like to just apply the .filter() in/on the match statement above, but I don't think I can since I have to wrestle with the iterator type and resort to a Box<dyn Iterator<...>>
+    // I'd also like to leave this as a vec instead of collecting it into a vec here, but then a problem would arise below when the rocks are rolled into place because
+    // 1. we're mutably borrowing grid inside the for loop below
+    // 2. the iterator - thanks to the .filter() below - would also be immutably borrowing grid
     let stone_indexes_ordered_for_traversal: Vec<(usize, usize)> = indexes_ordered_for_traversal
         .filter(|(row_index, col_index)| grid[*row_index][*col_index] == 'O')
         .collect();
