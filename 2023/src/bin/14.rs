@@ -119,7 +119,7 @@ fn tilt(grid: &mut [Vec<char>], direction: Direction) {
     let get_row_index_iterator = || 0..row_count;
     let get_col_index_iterator = || 0..col_count;
 
-    // another approach is to have the match statement output a collected Vec, but then I have to copy+paste this .filter() and the .collect() for each match arm, and that's a pain to read
+    // another approach instead of using a boxed iterator like this would be to have the match statement output a collected vec, but then I'd have to copy+paste more code for each match arm, and that's a pain to read
     // I'm not going to worry about the performance backlash of heap allocation from using Box like this; it's probably not a big deal
     let indexes_ordered_for_traversal: Box<dyn Iterator<Item = (usize, usize)>> = match direction {
         Direction::North => Box::new(get_row_index_iterator().flat_map(|row_index| {
